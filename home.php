@@ -215,10 +215,6 @@ $logado = $_SESSION['nome'];
         </div>
     </div>
 
-    <div>
-        fiz alteraçao
-    </div>
-
     <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 
