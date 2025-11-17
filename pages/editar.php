@@ -19,27 +19,31 @@ if (isset($_SESSION['alert'])) {
 
 if (isset($_POST['submit'])) {
 
+    // recebe os dados do form. e guarda nas variáveis ja passando a senha com hash
     $nome = ($_POST['nome']);
     $email = ($_POST['email']);
     $hash = password_hash(($_POST['senha']), PASSWORD_DEFAULT);
     $id_grupo = ($_POST['id_grupo']);
 
     try {
+        // faz a edição do usuário no banco de dados
         $ins_data = "UPDATE usuarios SET 
-                        nome = '{$nome}',
-                        email = '{$email}',
-                        senha = '{$hash}',
-                        fk_grupo = '{$id_grupo}'
-                        WHERE id = " . $_REQUEST['id'];
+                            nome = '{$nome}',
+                            email = '{$email}',
+                            senha = '{$hash}',
+                            fk_grupo = '{$id_grupo}'
+                    WHERE id = " . $_REQUEST['id'];
         $stmt_ins = $conn->prepare($ins_data);
         $stmt_ins->execute();
 
+        // se deu certo cria um alerta de sucesso
         $_SESSION['alert'] = [
             'icon' => 'success',
             'title' => 'Edição realizada com sucesso!',
             'text' => "O usuário $nome foi alterado."
         ];
     } catch (PDOException $e) {
+        // se deu errado um alerta de erro
         $_SESSION['alert'] = [
             'icon' => 'error',
             'title' => 'Erro ao atualizar dados!',

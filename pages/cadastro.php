@@ -10,21 +10,27 @@ if (isset($_POST['submit'])) {
     $id_grupo = ($_POST['id_grupo']);
 
     try {
-        // faz a inserção no banco de dados
+        // faz a inserção do usuário no banco de dados
         $ins_data = "INSERT INTO usuarios 
-                                (nome, email, senha, fk_grupo) 
-                        VALUES  ('$nome', '$email', '$hash', '$id_grupo')";
+                            (nome, 
+                            email, 
+                            senha, 
+                            fk_grupo) 
+                    VALUES ('$nome', 
+                            '$email', 
+                            '$hash', 
+                            '$id_grupo')";
         $stmt_ins = $conn->prepare($ins_data);
         $stmt_ins->execute();
 
-        // se eu certo cria um alerta de sucesso
+        // se deu certo cria um alerta de sucesso
         $_SESSION['alert'] = [
             'icon' => 'success',
             'title' => 'Cadastro realizado com sucesso!',
             'text' => "O usuário $nome foi inserido no banco de dados."
         ];
     } catch (PDOException $e) {
-        // se eu errado um alerta de erro
+        // se deu errado um alerta de erro
         $_SESSION['alert'] = [
             'icon' => 'error',
             'title' => 'Erro ao cadastrar!',

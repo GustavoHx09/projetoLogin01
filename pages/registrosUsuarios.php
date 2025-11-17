@@ -1,6 +1,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<?php 
-    if (isset($_SESSION['alert'])) {
+<?php
+if (isset($_SESSION['alert'])) {
     $alert = $_SESSION['alert'];
     echo "
         <script>
@@ -18,7 +18,7 @@
 <h1>Registros de Usuários</h1>
 
 <?php
-
+// seleciona todos os usuários do bancoi de dados
 $sql = "SELECT u.id, u.nome, u.email, g.nome AS nome_grupo
         FROM usuarios u
         LEFT JOIN grupos g ON g.id = u.fk_grupo";
@@ -45,8 +45,8 @@ if ($qtd > 0) {
                 <button onclick=\"location.href='?page=editar&id=" . $row->id . "';\"class='btn btn-success'>Editar</button>
 
                 <button onclick=\"if(confirm('Tem certeza que deseja excluir o usuario $row->nome ?')){location.href='?page=excluir&id=" . $row->id . "';}else{false;}\" class='btn btn-danger'>Excluir</button>
-            </td>"; 
-       echo "<tr>";
+            </td>";
+        echo "<tr>";
     }
     echo "</table>";
 } else {

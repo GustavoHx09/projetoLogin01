@@ -17,25 +17,27 @@ if (isset($_SESSION['alert'])) {
     unset($_SESSION['alert']);
 }
 
-    try {
+// faz a exclusão do grupo no banco de dados
+try {
+    $sql = "DELETE FROM grupos 
+                WHERE id = " . $_REQUEST['id'];
+    $result = $conn->query($sql);
+    $result->execute();
 
-        $sql = "DELETE FROM grupos WHERE id = " . $_REQUEST['id'];
-        $result = $conn->query($sql);
-        $result->execute();
+    //se deu certo emite um alerta de sucesso
+    $_SESSION['alert'] = [
+        'icon' => 'success',
+        'title' => 'Exclusão realizada com sucesso!',
+        'text' => "O grupo foi deletado."
+    ];
+} catch (PDOException $e) {
+    //se deu erro emite um alerta de erro
+    $_SESSION['alert'] = [
+        'icon' => 'error',
+        'title' => 'Erro ao deletar dados!',
+        'text' => 'Detalhes: ' . $e->getMessage()
+    ];
+}
 
-        $_SESSION['alert'] = [
-            'icon' => 'success',
-            'title' => 'Exclusão realizada com sucesso!',
-            'text' => "O grupo foi deletado."
-        ];
-    } catch (PDOException $e) {
-        $_SESSION['alert'] = [
-            'icon' => 'error',
-            'title' => 'Erro ao deletar dados!',
-            'text' => 'Detalhes: ' . $e->getMessage()
-        ];
-    }
-
-    header('Location: ?page=registrosGrupos');
-    exit;
-?>
+header('Location: ?page=registrosGrupos');
+exit;

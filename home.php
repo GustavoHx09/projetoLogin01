@@ -29,7 +29,7 @@ $logado = $_SESSION['nome'];
     if ($page == "" || $page == "home") {
     ?>
         <!-- chama a parte fixa da navbar -->
-        <?php include_once('/includes/navbar'); ?>
+        <?php include_once('includes/navbar.php'); ?>
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
@@ -48,7 +48,7 @@ $logado = $_SESSION['nome'];
     ?>
 
         <!-- chama a parte fixa da navbar -->
-        <?php include_once('/includes/navbar'); ?>
+        <?php include_once('includes/navbar.php'); ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?page=cadastrar">Cadastrar Usuario</a>
                         </li>
@@ -70,7 +70,7 @@ $logado = $_SESSION['nome'];
     ?>
 
         <!-- chama a parte fixa da navbar -->
-        <?php include_once('/includes/navbar'); ?>
+        <?php include_once('includes/navbar.php'); ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?page=cadastrar">Cadastrar Usuario</a>
                         </li>
@@ -92,7 +92,7 @@ $logado = $_SESSION['nome'];
     ?>
 
         <!-- chama a parte fixa da navbar -->
-        <?php include_once('/includes/navbar'); ?>
+        <?php include_once('includes/navbar.php'); ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?page=cadastrar">Cadastrar</a>
                         </li>
@@ -114,7 +114,7 @@ $logado = $_SESSION['nome'];
     ?>
 
         <!-- chama a parte fixa da navbar -->
-        <?php include_once('/includes/navbar'); ?>
+        <?php include_once('includes/navbar.php'); ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?page=cadastrarGrupos">Cadastrar Grupo</a>
                         </li>
@@ -136,7 +136,7 @@ $logado = $_SESSION['nome'];
     ?>
 
         <!-- chama a parte fixa da navbar -->
-        <?php include_once('/includes/navbar'); ?>
+        <?php include_once('includes/navbar.php'); ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?page=cadastrarGrupos">Cadastrar Grupo</a>
                         </li>
@@ -158,7 +158,7 @@ $logado = $_SESSION['nome'];
     ?>
 
         <!-- chama a parte fixa da navbar -->
-        <?php include_once('/includes/navbar'); ?>
+        <?php include_once('includes/navbar.php'); ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?page=cadastrarGrupos">Cadastrar Grupo</a>
                         </li>

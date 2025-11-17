@@ -19,6 +19,7 @@ if (isset($_SESSION['alert'])) {
 
 if (isset($_POST['submit'])) {
 
+    // recebe os dados do form. e armazena nas variáveis
     $nome = ($_POST['nome']);
     $cadastro_usuario = ($_POST['cadastro_usuarios']);
     $editar_usuario = ($_POST['editar_usuarios']);
@@ -28,8 +29,8 @@ if (isset($_POST['submit'])) {
     $editar_grupo = ($_POST['editar_grupos']);
     $listar_grupo = ($_POST['listar_grupos']);
     $excluir_grupo = ($_POST['excluir_grupos']);
-    
 
+    // faz a edição do grupo no banco de dados
     try {
         $sql = "UPDATE grupos SET
                     nome = '{$nome}',
@@ -41,17 +42,19 @@ if (isset($_POST['submit'])) {
                     editar_grupo = '{$editar_grupo}', 
                     listar_grupo = '{$listar_grupo}', 
                     excluir_grupo = '{$excluir_grupo}'
-                    WHERE id = " . $_REQUEST['id'];
+                WHERE id = " . $_REQUEST['id'];
 
         $stmt_ins = $conn->prepare($sql);
         $stmt_ins->execute();
 
+        // se deu certo emite um alerta de sucesso
         $_SESSION['alert'] = [
             'icon' => 'success',
             'title' => 'Grupo alterado com sucesso!',
             'text' => "O grupo $nome foi alterado no banco de dados."
         ];
     } catch (PDOException $e) {
+        // se deu erro emite um alerta de erro
         $_SESSION['alert'] = [
             'icon' => 'error',
             'title' => 'Erro ao editar!',

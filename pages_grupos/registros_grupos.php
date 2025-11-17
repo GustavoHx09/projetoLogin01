@@ -18,12 +18,13 @@
 <h1>Registros de Grupos</h1>
 
 <?php
-
+// seleciona todos os grupos no banco de dados
 $sql = "SELECT * FROM grupos";
 $result = $conn->query($sql);
 $rows = $result->fetchAll(PDO::FETCH_OBJ);
 $qtd = count($rows);
 
+//cria uma lista com os grupos encontrados
 if ($qtd > 0) {
     echo "<table class='table table-hover table-striped table-bordered'>";
     echo "<tr>";

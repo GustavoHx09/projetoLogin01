@@ -6,6 +6,7 @@ include_once('includes/pdo.php');
 
 if (isset($_POST['submit'])) {
 
+    // recebe os dados do form. e armazena nas variáveis
     $nome = ($_POST['nome']);
     $cadastro_usuario = ($_POST['cadastro_usuarios']);
     $editar_usuario = ($_POST['editar_usuarios']);
@@ -15,23 +16,40 @@ if (isset($_POST['submit'])) {
     $editar_grupo = ($_POST['editar_grupos']);
     $listar_grupo = ($_POST['listar_grupos']);
     $excluir_grupo = ($_POST['excluir_grupos']);
-    
 
+
+    // faz a inserção do grupo no banco de dados
     try {
         $sql = "INSERT INTO grupos 
-                    (nome, cadastrar_usuario, editar_usuario, listar_usuario, excluir_usuario, 
-                    cadastrar_grupo, editar_grupo, listar_grupo, excluir_grupo) 
-                    VALUES ('$nome', '$cadastro_usuario', '$editar_usuario', '$listar_usuario', '$excluir_usuario', 
-                    '$cadastro_grupo', '$editar_grupo', '$listar_grupo', '$excluir_grupo')";
+                        (nome, 
+                        cadastrar_usuario, 
+                        editar_usuario, 
+                        listar_usuario, 
+                        excluir_usuario, 
+                        cadastrar_grupo, 
+                        editar_grupo, 
+                        listar_grupo, 
+                        excluir_grupo) 
+                VALUES ('$nome', 
+                        '$cadastro_usuario', 
+                        '$editar_usuario', 
+                        '$listar_usuario', 
+                        '$excluir_usuario', 
+                        '$cadastro_grupo', 
+                        '$editar_grupo', 
+                        '$listar_grupo', 
+                        '$excluir_grupo')";
         $stmt_ins = $conn->prepare($sql);
         $stmt_ins->execute();
 
+        // se deu certo cria um alerta de sucesso
         $_SESSION['alert'] = [
             'icon' => 'success',
             'title' => 'Grupo inserido com sucesso!',
             'text' => "O grupo $nome foi inserido no banco de dados."
         ];
     } catch (PDOException $e) {
+        // se deu erro cria um alerta de erro
         $_SESSION['alert'] = [
             'icon' => 'error',
             'title' => 'Erro ao cadastrar!',
