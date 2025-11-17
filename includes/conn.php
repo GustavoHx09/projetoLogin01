@@ -1,4 +1,6 @@
 <?php
+
+// Insira seus dados aqui!
 $servername = "seu servidor";
 $dbname = "seu banco";
 $username = "seu user";
