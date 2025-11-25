@@ -1,0 +1,17 @@
+{
+    "name": "gustavo.silva/projeto-login01",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Gustavo Henrique",
+            "email": "157027244+GustavoHx09@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
