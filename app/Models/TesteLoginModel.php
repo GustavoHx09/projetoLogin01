@@ -19,7 +19,7 @@ class TesteLoginModel extends ConnectDB {
                                             u.nome, 
                                             u.senha, 
                                             u.fk_grupo, 
-                                            g.nome AS nome_grupo 
+                                            g.grupo AS nome_grupo 
                                     FROM usuarios u
                                     JOIN grupos g 
                                     ON g.id = u.fk_grupo

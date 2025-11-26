@@ -42,6 +42,7 @@ class TesteLoginController {
     }
 
     public static function logout() {
+        session_unset();
         session_destroy();
         header("Location: /projetoLogin01/login");
         exit;

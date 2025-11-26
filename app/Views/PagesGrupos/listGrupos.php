@@ -1,6 +1,17 @@
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<?php 
-    if (isset($_SESSION['alert'])) {
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema</title>
+    <link rel="stylesheet" href="/<?= $_ENV['BASE_URL']; ?>/assets/css/bootstrap.min.css">
+    <script src="/<?= $_ENV['BASE_URL']; ?>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<?php
+if (isset($_SESSION['alert'])) {
     $alert = $_SESSION['alert'];
     echo "
         <script>
@@ -15,37 +26,63 @@
     unset($_SESSION['alert']);
 }
 ?>
-<h1>Registros de Grupos</h1>
 
-<?php
-// seleciona todos os grupos no banco de dados
-$sql = "SELECT * FROM grupos";
-$result = $conn->query($sql);
-$rows = $result->fetchAll(PDO::FETCH_OBJ);
-$qtd = count($rows);
+<?php include(__DIR__ . '/../menu.php'); ?>
+            <li class="nav-item">
+                <a class="nav-link" href="grupos/new">Cadastrar Grupos</a>
+            </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a href="/<?= $_ENV['BASE_URL']; ?>/logout" class="btn btn-danger">Sair</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-//cria uma lista com os grupos encontrados
-if ($qtd > 0) {
-    echo "<table class='table table-hover table-striped table-bordered'>";
-    echo "<tr>";
-    echo "<th>#</th>";
-    echo "<th>Nome</th>";
-    echo "<th>Ações</th>";
-    echo "</tr>";
-    foreach ($rows as $row) {
-        echo "<tr>";
-        echo "<td>" . $row->id . "</td>";
-        echo "<td>" . $row->nome . "</td>";
-        echo "<td>
-                <button onclick=\"location.href='?page=editarGrupos&id=" . $row->id . "';\"class='btn btn-success'>Editar</button>
+<main class="container align-self-center">
+    <h1>Registros de Grupos</h1>
 
-                <button onclick=\"if(confirm('Tem certeza que deseja excluir o banco $row->nome ?')){location.href='?page=excluirGrupos&id=" . $row->id . "';}else{false;}\" class='btn btn-danger'>Excluir</button>
-            </td>"; 
-       echo "<tr>";
-    }
-    echo "</table>";
-} else {
-    echo "
+
+    <?php
+    if (count($grupos) > 0) {
+        echo "<table class='table table-hover table-striped table-bordered'>
+            <tr>
+                <th>Grupo</th>
+                <th>Cadastrar</th>
+                <th>Listar</th>
+                <th>Atualizar</th>
+                <th>Deletar</th>
+                <th>Ações</th>
+            </tr>";
+        foreach ($grupos as $grupo) {
+                $cadastrar = ($grupo['cadastrar']) ? "Sim" : "Não";
+                $listar = ($grupo['listar']) ? "Sim" : "Não";
+                $editar = ($grupo['editar']) ? "Sim" : "Não";
+                $deletar = ($grupo['deletar']) ? "Sim" : "Não";
+            echo "<tr>
+                    <td>" . $grupo['grupo'] . "</td>
+                    <td>" . $cadastrar . "</td>
+                    <td>" . $listar . "</td>
+                    <td>" . $editar . "</td>
+                    <td>" . $deletar . "</td>
+                    <td >
+                        <a href='/" . $_ENV['BASE_URL'] . "/grupos/edit/" . $grupo['id'] . "' class='btn btn-primary'>
+                        <i class='fas fa-edit'></i> Editar</a>
+
+                        <form action='/" . $_ENV['BASE_URL'] . "/grupos/delete/" . $grupo['id'] . "' method='POST' style='display:inline;'>
+                            <button type='submit' class='btn btn-danger' 
+                            onclick=\"return confirm('Tem certeza que deseja excluir o grupo " . $grupo['grupo'] . "?');\">
+                                <i class='fas fa-trash-alt'></i> Excluir
+                            </button>
+                        </form>
+                    </td>
+            <tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "
         <script>
         Swal.fire({
             icon: 'error',
@@ -55,5 +92,7 @@ if ($qtd > 0) {
         });
         </script>
         ";
-}
-?>
+    }
+    ?>
+
+</main>

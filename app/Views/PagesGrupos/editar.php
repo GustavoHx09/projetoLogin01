@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema</title>
+    <link rel="stylesheet" href="/<?= $_ENV['BASE_URL']; ?>/assets/css/bootstrap.min.css">
+    <script src="/<?= $_ENV['BASE_URL']; ?>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<?php
+if (isset($_SESSION['alert'])) {
+    $alert = $_SESSION['alert'];
+    echo "
+        <script>
+        Swal.fire({
+            icon: '{$alert['icon']}',
+            title: '{$alert['title']}',
+            html: '{$alert['text']}',
+            confirmButtonText: 'OK'
+        });
+        </script>
+    ";
+    unset($_SESSION['alert']);
+}
+?>
+
+<?php include(__DIR__ . '/../menu.php'); ?>
+            <li class="nav-item">
+                <a class="nav-link" href="/<?= $_ENV['BASE_URL']; ?>/grupos/new">Cadastrar Grupos</a>
+            </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a href="/<?= $_ENV['BASE_URL']; ?>/logout" class="btn btn-danger">Sair</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container align-self-center">
+    <h1>Editar Grupo</h1>
+    <form action="/<?= $_ENV['BASE_URL']; ?>/grupos/edit/<?= $id; ?>" method="POST">
+
+        <div class="mb-3">
+            <label for="grupo" class="form-label fw-bold">Nome do Grupo</label>
+            <input type="text" name="grupo" value="<?= $grupo['grupo'] ?>" id="grupo" required class="form-control" placeholder="Digite o nome do grupo">
+        </div>
+
+        <div>
+            <!-- Permissões -->
+            <div class="col-md-6">
+                <h4 class="mb-3">Permissões</h4>
+
+                <!-- Cadastrar -->
+                <div class="form-check form-switch">                
+                    <label for="cadastrar" class="form-check-label mr-3">Cadastrar:</label>
+                    <input type="checkbox" class="form-check-input" id="cadastrar" name="cadastrar" value="cadastrar" <?= ($grupo['cadastrar'] == 1 ? 'checked' : '') ?> >
+                </div>
+
+                <!-- Listar -->
+                <div class="form-check form-switch">                
+                    <label for="listar" class="form-check-label mr-3">Listar:</label>
+                    <input type="checkbox" class="form-check-input" id="listar" name="listar" value="listar" <?= ($grupo['listar'] == 1 ? 'checked' : '') ?> >
+                </div>
+
+                <!-- Editar -->               
+                <div class="form-check form-switch">                
+                    <label for="editar" class="form-check-label mr-3">Editar:</label>
+                    <input type="checkbox" class="form-check-input" id="editar" name="editar" value="editar" <?= ($grupo['editar'] == 1 ? 'checked' : '') ?> >
+                </div>
+
+                <!-- Excluir -->
+                <div class="form-check form-switch">                
+                    <label for="deletar" class="form-check-label mr-3">Deletar:</label>
+                    <input type="checkbox" class="form-check-input" id="deletar" name="deletar" value="deletar" <?= ($grupo['deletar'] == 1 ? 'checked' : '') ?> >
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <input type="submit" value="Atualizar Grupo" class="btn btn-success px-4">
+        </div>
+    </form>
+</main>

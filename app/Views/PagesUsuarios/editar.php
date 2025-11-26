@@ -72,7 +72,7 @@ if (isset($_SESSION['alert'])) {
             <option value="">--Selecione--</option>
             <?php foreach ($grupos as $grupo): ?>
                 <option value="<?= $grupo['id'] ?>" <?= ($grupo['id'] == $dados['fk_grupo']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($grupo['nome']) ?>
+                    <?= htmlspecialchars($grupo['grupo']) ?>
                 </option>
             <?php endforeach; ?>
         </select>

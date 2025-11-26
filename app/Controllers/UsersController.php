@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\UsersModel;
 use App\Models\GruposModel;
+use App\Core\Auth;
 
 class UsersController {
 
@@ -16,52 +17,60 @@ class UsersController {
     }
     
     // listar usuarios
-    public function listar() {
-        $users = $this->userModel->listar();
+    public function listar() 
+    {
+        Auth::check();
+        $users = $this->userModel->listarUsers();
         include __DIR__ . '/../Views/PagesUsuarios/listUsers.php';
         return $users;
     }
 
     // lista os grupos pro select no cadastro de usuarios
-    public function formNew(){
+    public function formNew()
+    {
+        Auth::check();
         $grupos = $this->grupoModel->listarGrupos();
         include __DIR__ . '/../Views/PagesUsuarios/cadastro.php';
         return true;
     }
 
-    public function formEdit($id){
+    public function formEdit($id)
+    {
+        Auth::check();
         $dados = $this->userModel->listUserid($id);
         // busca os grupos existentes reaproveitando o select do GruposModel
         $grupos = $this->grupoModel->listarGrupos();
-
         include __DIR__ . '/../Views/PagesUsuarios/editar.php';
         return true;
     }
 
     // cadastrar usuarios
-    public function cadastrar() {
-        if ($this->userModel->cadastrar()) {
-            header('Location: /projetoLogin01/users');
-        }
-    
+    public function cadastrar() 
+    {
+        Auth::check();
+        $this->userModel->cadastrarUser();
+        header('Location: /projetoLogin01/users');
         return true;
     }
 
     // editar usuarios
-    public function editar($id) {
+    public function editar($id) 
+    {
+        Auth::check();
+        // pego os dados do formulario de edicao
         $dados = $_POST;
-        $this->userModel->listUserid($id);
-        if ($this->userModel->editarUser($id, $dados)) {
-            header('Location: /projetoLogin01/users');
-        }
+        // e envio para o model para usar na edição dos dados
+        $this->userModel->editarUser($id, $dados);
+        header('Location: /projetoLogin01/users');
         return true;
     }
 
     // deletar usuarios
-    public function delete($id) {
+    public function delete($id) 
+    {
+        Auth::check();
         $this->userModel->deletarUser($id);
         header("Location: /projetoLogin01/users");
         return true;
     }
-
 }

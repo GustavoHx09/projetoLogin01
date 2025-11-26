@@ -18,116 +18,106 @@ class GruposModel extends ConnectDB
     public function listarGrupos()
     {
         $sql = $this->conexao->prepare("SELECT id, 
-                                            nome 
+                                            grupo,
+                                            cadastrar,
+                                            listar,
+                                            editar,
+                                            deletar
                                         FROM grupos 
-                                        ORDER BY nome");
+                                        ORDER BY grupo");
         $sql->execute();
         $grupos = $sql->fetchAll(\PDO::FETCH_ASSOC);
-
         return $grupos;
     }
 
-    // Cadastrar UsersRoles
-    public function CadastrarUserRolesModel($usuario, $dados, $response)
-    {
+    // Listar dados do grupo
+    public function listgrupoid($id){
+        
+        $sql = $this->conexao->prepare("SELECT * 
+                                        FROM grupos
+                                        WHERE id = $id");
+        $sql->execute();
+        $dados = $sql->fetch(\PDO::FETCH_ASSOC);
 
-        $sql = $this->conexao->prepare(" INSERT INTO tb_users_permission 
-                                                    (id_user,
-                                                    route,
-                                                    get,
-                                                    post,
-                                                    put,
-                                                    del) 
-                                            VALUES (:id_user,
-                                                    :route,
-                                                    :get,
-                                                    :post,
-                                                    :put,
-                                                    :del) ");
-        $sql->bindValue(':id_user', $dados->data['id_user']);
-        $sql->bindValue(':route', $dados->data['route']);
-        $sql->bindValue(':get', $dados->data['method']['get']);
-        $sql->bindValue(':post', $dados->data['method']['post']);
-        $sql->bindValue(':put', $dados->data['method']['put']);
-        $sql->bindValue(':del', $dados->data['method']['del']);
+        return $dados;
+    }
+
+    // Cadastrar Grupo
+    public function cadastrarGrupo()
+    {
+        $dados['cadastrar'] = isset($_POST['cadastrar']) ? 1 : 0;
+        $dados['listar'] = isset($_POST['listar']) ? 1 : 0;
+        $dados['editar'] = isset($_POST['editar']) ? 1 : 0;
+        $dados['deletar'] = isset($_POST['deletar']) ? 1 : 0;
+        
+        $sql = $this->conexao->prepare(" INSERT INTO grupos 
+                                                (grupo,
+                                                cadastrar,
+                                                listar,
+                                                editar,
+                                                deletar) 
+                                        VALUES (:grupo,
+                                                :cadastrar,
+                                                :listar,
+                                                :editar,
+                                                :deletar)
+                                    ");
+        $sql->bindValue(':grupo', $_POST['grupo']);
+        $sql->bindValue(':cadastrar', $dados['cadastrar']);
+        $sql->bindValue(':listar', $dados['listar']);
+        $sql->bindValue(':editar', $dados['editar']);
+        $sql->bindValue(':deletar', $dados['deletar']);
         $result = $sql->execute();
 
 
         if (!$result) {
-            $response->status = 'error';
-            $response->code_error = 500;
-            $response->message = 'Erro ao cadastrar users roles';
-
             return false;
         } else {
-            $response->status = 'success';
-            $response->code_error = 200;
-            $response->message = 'User ' . $dados->data['id_user'] . ' cadastrado com sucesso';
-            $response->data = true;
+            return true;   
         }
-
-        return true;
     }
 
-
-    // Atualizar UsersRoles
-    public function AtualizarUserRolesModel($usuario, $dados, $response)
-    {
-
-        $sql = $this->conexao->prepare("UPDATE tb_users_permission 
-                                        SET get = :get, post = :post, put = :put, del = :del 
-                                        WHERE id_user = :id_user 
-                                        AND route = :route");
-
-        $sql->bindValue(':id_user', $dados->data['id_user']);
-        $sql->bindValue(':route', $dados->data['route']);
-        $sql->bindValue(':get', $dados->data['method']['get']);
-        $sql->bindValue(':post', $dados->data['method']['post']);
-        $sql->bindValue(':put', $dados->data['method']['put']);
-        $sql->bindValue(':del', $dados->data['method']['del']);
+    // Atualizar Grupo
+    public function editarGrupo($id, $dados) {
+        $sql = $this->conexao->prepare("UPDATE grupos SET 
+                                                grupo = :grupo,
+                                                cadastrar = :cadastrar,
+                                                listar = :listar,
+                                                editar = :editar,
+                                                deletar = :deletar
+                                        WHERE id = $id
+                                        ");
+        $sql->bindValue(':grupo', $dados['grupo']);
+        $sql->bindValue(':cadastrar', $dados['cadastrar']);
+        $sql->bindValue(':listar', $dados['listar']);
+        $sql->bindValue(':editar', $dados['editar']);
+        $sql->bindValue(':deletar', $dados['deletar']);
         $result = $sql->execute();
 
-
-        if (!$result) {
-            $response->status = 'error';
-            $response->code_error = 500;
-            $response->message = 'Erro ao atualizar users roles';
-
+        if(!$result){
+            echo "Não foi possivel inserir no banco de dados!";
             return false;
+            exit;
         } else {
-            $response->status = 'success';
-            $response->code_error = 200;
-            $response->message = 'User ' . $dados->data['id_user'] . ' atualizado com sucesso';
-            $response->data = true;
+            return true;
         }
 
-        return true;
     }
-
 
     // Deletar UsersRoles
-    public function DeletarUserRolesModel($usuario, $dados, $response)
+    public function deletarGrupo($id) 
     {
-
-        $sql = $this->conexao->prepare("DELETE FROM tb_users_permission 
-                                        WHERE id_user = :id_user 
-                                        AND route = :route");
-        $sql->bindValue(':id_user', $dados->data['id_user']);
-        $sql->bindValue(':route', $dados->data['route']);
+        $sql = $this->conexao->prepare("DELETE FROM grupos 
+                                        WHERE id = :id
+                                    ");
+        $sql->bindValue(':id', $id);
         $resultado = $sql->execute();
 
         if (!$resultado) {
-            $response->status = 'error';
-            $response->code_error = 500;
-            $response->message = 'Erro ao deletar users roles';
+            
             return false;
         } else {
-            $response->status = 'success';
-            $response->code_error = 200;
-            $response->message = 'User ' . $dados->data['id_user'] . ' deletado com sucesso';
-            $response->data = true;
+            return true;
         }
-
-        return true;
     }
 }

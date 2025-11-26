@@ -14,13 +14,13 @@ class UsersModel extends ConnectDB{
     }
 
     // Listar Users
-    public function listar() 
+    public function listarUsers() 
     {
         $sql = $this->conexao->prepare("SELECT u.id,
                                                 u.nome,
                                                 u.usuario,
                                                 u.email,
-                                                g.nome AS grupo
+                                                g.grupo AS grupo
                                         FROM usuarios u
                                         INNER JOIN grupos g
                                         ON g.id = u.fk_grupo
@@ -30,20 +30,6 @@ class UsersModel extends ConnectDB{
 
         return $users;
     }
-
-    // Listar select de grupos
-    public function listarGrupos()
-    {
-        $sql = $this->conexao->prepare("SELECT id, 
-                                            nome 
-                                        FROM grupos 
-                                        ORDER BY nome");
-        $sql->execute();
-        $grupos = $sql->fetchAll(\PDO::FETCH_ASSOC);
-
-        return $grupos;
-    }
-
 
     public function listUserid($id){
         
@@ -61,7 +47,7 @@ class UsersModel extends ConnectDB{
     }
 
     // Cadastrar Users
-    public function cadastrar()
+    public function cadastrarUser()
     {
         $sql = $this->conexao->prepare("INSERT INTO usuarios 
                                                 (nome, 
