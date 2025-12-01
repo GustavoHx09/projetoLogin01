@@ -10,23 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<?php
-if (isset($_SESSION['alert'])) {
-    $alert = $_SESSION['alert'];
-    echo "
-        <script>
-        Swal.fire({
-            icon: '{$alert['icon']}',
-            title: '{$alert['title']}',
-            html: '{$alert['text']}',
-            confirmButtonText: 'OK'
-        });
-        </script>
-    ";
-    unset($_SESSION['alert']);
-}
-?>
-
 <?php include(__DIR__ . '/../menu.php'); ?>
             <li class="nav-item">
                 <a class="nav-link" href="/<?= $_ENV['BASE_URL']; ?>/grupos/new">Cadastrar Grupos</a>
@@ -47,7 +30,7 @@ if (isset($_SESSION['alert'])) {
 
         <div class="mb-3">
             <label for="grupo" class="form-label fw-bold">Nome do Grupo</label>
-            <input type="text" name="grupo" id="grupo" required class="form-control" placeholder="Digite o nome do grupo">
+            <input type="text" name="grupo" id="grupo" class="form-control" placeholder="Digite o nome do grupo">
         </div>
         <div>
             <div class="col-md-6">
@@ -83,4 +66,22 @@ if (isset($_SESSION['alert'])) {
             <input type="submit" value="Criar Grupo" class="btn btn-success px-4">
         </div>
     </form>
+
+    <?php
+    if (isset($_SESSION['alert'])) {
+        $alert = $_SESSION['alert'];
+        echo "
+                <script>
+                Swal.fire({
+                    icon: '{$alert['icon']}',
+                    title: '{$alert['title']}',
+                    text: '{$alert['text']}',
+                    confirmButtonText: 'OK'
+                });
+                </script>
+                ";
+        unset($_SESSION['alert']);
+    }
+    ?>
+
 </main>

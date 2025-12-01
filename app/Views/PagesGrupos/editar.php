@@ -10,23 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<?php
-if (isset($_SESSION['alert'])) {
-    $alert = $_SESSION['alert'];
-    echo "
-        <script>
-        Swal.fire({
-            icon: '{$alert['icon']}',
-            title: '{$alert['title']}',
-            html: '{$alert['text']}',
-            confirmButtonText: 'OK'
-        });
-        </script>
-    ";
-    unset($_SESSION['alert']);
-}
-?>
-
 <?php include(__DIR__ . '/../menu.php'); ?>
             <li class="nav-item">
                 <a class="nav-link" href="/<?= $_ENV['BASE_URL']; ?>/grupos/new">Cadastrar Grupos</a>
@@ -47,7 +30,7 @@ if (isset($_SESSION['alert'])) {
 
         <div class="mb-3">
             <label for="grupo" class="form-label fw-bold">Nome do Grupo</label>
-            <input type="text" name="grupo" value="<?= $grupo['grupo'] ?>" id="grupo" required class="form-control" placeholder="Digite o nome do grupo">
+            <input type="text" name="grupo" value="<?= $result['grupo'] ?>" id="grupo" required class="form-control" placeholder="Digite o nome do grupo">
         </div>
 
         <div>
@@ -58,25 +41,25 @@ if (isset($_SESSION['alert'])) {
                 <!-- Cadastrar -->
                 <div class="form-check form-switch">                
                     <label for="cadastrar" class="form-check-label mr-3">Cadastrar:</label>
-                    <input type="checkbox" class="form-check-input" id="cadastrar" name="cadastrar" value="cadastrar" <?= ($grupo['cadastrar'] == 1 ? 'checked' : '') ?> >
+                    <input type="checkbox" class="form-check-input" id="cadastrar" name="cadastrar" value="cadastrar" <?= ($result['cadastrar'] == 1 ? 'checked' : '') ?> >
                 </div>
 
                 <!-- Listar -->
                 <div class="form-check form-switch">                
                     <label for="listar" class="form-check-label mr-3">Listar:</label>
-                    <input type="checkbox" class="form-check-input" id="listar" name="listar" value="listar" <?= ($grupo['listar'] == 1 ? 'checked' : '') ?> >
+                    <input type="checkbox" class="form-check-input" id="listar" name="listar" value="listar" <?= ($result['listar'] == 1 ? 'checked' : '') ?> >
                 </div>
 
                 <!-- Editar -->               
                 <div class="form-check form-switch">                
                     <label for="editar" class="form-check-label mr-3">Editar:</label>
-                    <input type="checkbox" class="form-check-input" id="editar" name="editar" value="editar" <?= ($grupo['editar'] == 1 ? 'checked' : '') ?> >
+                    <input type="checkbox" class="form-check-input" id="editar" name="editar" value="editar" <?= ($result['editar'] == 1 ? 'checked' : '') ?> >
                 </div>
 
                 <!-- Excluir -->
                 <div class="form-check form-switch">                
                     <label for="deletar" class="form-check-label mr-3">Deletar:</label>
-                    <input type="checkbox" class="form-check-input" id="deletar" name="deletar" value="deletar" <?= ($grupo['deletar'] == 1 ? 'checked' : '') ?> >
+                    <input type="checkbox" class="form-check-input" id="deletar" name="deletar" value="deletar" <?= ($result['deletar'] == 1 ? 'checked' : '') ?> >
                 </div>
             </div>
         </div>
@@ -86,3 +69,20 @@ if (isset($_SESSION['alert'])) {
         </div>
     </form>
 </main>
+
+<?php
+if (isset($_SESSION['alert'])) {
+    $alert = $_SESSION['alert'];
+    echo "
+        <script>
+        Swal.fire({
+            icon: '{$alert['icon']}',
+            title: '{$alert['title']}',
+            html: '{$alert['text']}',
+            confirmButtonText: 'OK'
+        });
+        </script>
+    ";
+    unset($_SESSION['alert']);
+}
+?>

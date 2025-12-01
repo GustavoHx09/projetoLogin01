@@ -14,12 +14,12 @@ class GruposController {
         $this->userModel = new UsersModel();
     }
 
-    // Listar Grupos
+    // lista os grupos
     public function listar() 
     {
         Auth::check();
-        $grupos = $this->grupoModel->listarGrupos();
-        include __DIR__ . '/../Views/PagesGrupos/listGrupos.php';
+        $result = $this->grupoModel->listarGrupos();
+        include __DIR__ . '/../Views/PagesGrupos/listGrupos.php'; 
         return true;
     }
 
@@ -35,45 +35,40 @@ class GruposController {
     public function formEdit($id)
     {
         Auth::check();
-        $grupo = $this->grupoModel->listGrupoid($id);
+        $result = $this->grupoModel->listGrupoid($id);
         include __DIR__ . '/../Views/PagesGrupos/editar.php';
         return true;
     }
 
-    // cadastrar usuarios
+    // cadastrar grupo
     public function cadastrar() 
     {
         Auth::check();
-        $this->grupoModel->cadastrarGrupo();
+        $result = $this->grupoModel->cadastrarGrupo();
+        header("Location: /projetoLogin01/grupos");
+        return true;
+    }
+
+    // editar grupo
+    public function editar($id) 
+    {
+        Auth::check();    
+        // apenas para pegar o nome do grupo antigo para exibir no alert
+        $oldGrupo = $this->grupoModel->listGrupoid($id);
+        $result = $this->grupoModel->editarGrupo($id, $oldGrupo);
         header('Location: /projetoLogin01/grupos');
         return true;
     }
 
-    // editar grupos
-    public function editar($id) 
-    {
-        Auth::check();
-        $dados['grupo'] = $_POST['grupo'];
-        $dados['cadastrar'] = isset($_POST['cadastrar']) ? 1 : 0;
-        $dados['listar'] = isset($_POST['listar']) ? 1 : 0;
-        $dados['editar'] = isset($_POST['editar']) ? 1 : 0;
-        $dados['deletar'] = isset($_POST['deletar']) ? 1 : 0;
-
-        if ($this->grupoModel->editarGrupo($id, $dados)) {
-            header('Location: /projetoLogin01/grupos');
-        }
-        return true;
-    }
-
-    // deletar usuarios
+    // deletar grupo
     public function deletar($id) 
     {
         Auth::check();
-        $this->grupoModel->deletarGrupo($id);
+        $oldGrupo = $this->grupoModel->listGrupoid($id);
+        $this->grupoModel->deletarGrupo($id, $oldGrupo);
         header('Location: /projetoLogin01/grupos');
         return true;
     }
 }
-
 
 ?>

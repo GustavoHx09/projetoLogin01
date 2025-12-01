@@ -71,7 +71,7 @@ if (isset($_SESSION['alert'])) {
             <select id="id_grupo" name="id_grupo" class="form-select border-primary shadow-sm" required>
                 <option value="">--Selecione--</option>
                 <?php foreach ($grupos as $grupo): ?>
-                    <option value="<?= $grupo['id'] ?>"><?= htmlspecialchars($grupo['nome']) ?></option>
+                    <option value="<?= $grupo['id'] ?>"><?= htmlspecialchars($grupo['grupo']) ?></option>
                 <?php endforeach; ?>
             </select>
             <div class="form-text text-muted">

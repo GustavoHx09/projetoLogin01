@@ -34,8 +34,7 @@ class TesteLoginModel extends ConnectDB {
                 'text' => 'Login inválido ou inexistente, verifique e tente novamente!'
             ];
             header("Location: /projetoLogin01/");  
-            return false;      
-            exit;
+            return false;
         } else {
             // verifica se a senha fornecida bate com a senha vinculada ao email do banco
             if ($userFound['email'] && password_verify($senha, $userFound['senha'])) {
@@ -43,7 +42,6 @@ class TesteLoginModel extends ConnectDB {
                 $_SESSION['email'] = $userFound['email'];
                 $_SESSION['nome'] = $userFound['nome'];
                 return true;
-                exit;
             } else {
                 $_SESSION['alert'] = [
                     'icon' => 'error',
@@ -52,7 +50,6 @@ class TesteLoginModel extends ConnectDB {
                 ];
                 header("Location: /projetoLogin01/");
                 return false;
-                exit;
             }
         }
     }
