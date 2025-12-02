@@ -1,32 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema</title>
-    <link rel="stylesheet" href="/<?= $_ENV['BASE_URL']; ?>/assets/css/bootstrap.min.css">
-    <script src="/<?= $_ENV['BASE_URL']; ?>/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-
-<?php
-if (isset($_SESSION['alert'])) {
-    $alert = $_SESSION['alert'];
-    echo "
-        <script>
-        Swal.fire({
-            icon: '{$alert['icon']}',
-            title: '{$alert['title']}',
-            html: '{$alert['text']}',
-            confirmButtonText: 'OK'
-        });
-        </script>
-    ";
-    unset($_SESSION['alert']);
-}
-?>
-
 <?php include(__DIR__ . '/../menu.php'); ?>
             <li class="nav-item">
                 <a class="nav-link" href="/<?= $_ENV['BASE_URL']; ?>/users/new">Cadastrar Usuário</a>
@@ -48,7 +19,7 @@ if (isset($_SESSION['alert'])) {
 
         <div class="mb-3">
             <label for="nome">Nome</label>
-            <input type="text" value="<?= htmlspecialchars($dados['nome']) ?>" name="nome" id="nome" required class="form-control">
+            <input type="text" value="<?= htmlspecialchars($dados['nome']) ?>" name="nome" id="nome" class="form-control">
         </div>
 
         <div class="mb-3">
@@ -87,3 +58,24 @@ if (isset($_SESSION['alert'])) {
 
     </form>
 </main>
+
+    <?php
+    if (isset($_SESSION['alert'])) {
+        $alert = $_SESSION['alert'];
+        echo "
+            <script>
+            Swal.fire({
+                icon: '{$alert['icon']}',
+                title: '{$alert['title']}',
+                html: '{$alert['text']}',
+                confirmButtonText: 'OK'
+            });
+            </script>
+        ";
+        unset($_SESSION['alert']);
+    }
+    ?>
+
+</body>
+
+</html>

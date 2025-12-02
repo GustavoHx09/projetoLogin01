@@ -1,7 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SystLog01</title>
+    <link rel="stylesheet" href="/<?= $_ENV['BASE_URL']; ?>/assets/css/bootstrap.min.css">
+    <script src="/<?= $_ENV['BASE_URL']; ?>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <a class="navbar-brand" href="">
-                    <h2>Sistema</h2>
+                    <h2>SystLog01</h2>
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +34,6 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/<?= $_ENV['BASE_URL']; ?>/users">Registros Usuarios</a></li>
-                                <li><a class="dropdown-item" href="/<?= $_ENV['BASE_URL']; ?>/grupos">Registro Grupos</a></li>
+                                <li><a class="dropdown-item" href="/<?= $_ENV['BASE_URL']; ?>/grupos">Registros Grupos</a></li>
                             </ul>
                         </li>

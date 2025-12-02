@@ -13,44 +13,81 @@ class TesteLoginModel extends ConnectDB {
         $this->conn = parent::retornarConexao();
     }
 
-    public function LogarUsuario($email,$senha) {
+    public function LogarUsuario() {
 
-        $sql = $this->conn->prepare("SELECT u.email, 
-                                            u.nome, 
-                                            u.senha, 
-                                            u.fk_grupo, 
-                                            g.grupo AS nome_grupo 
-                                    FROM usuarios u
-                                    JOIN grupos g 
-                                    ON g.id = u.fk_grupo
-                                    WHERE email = '$email'");
-        $sql->execute();
-        $userFound = $sql->fetch(\PDO::FETCH_ASSOC);
-
-        if (!$userFound) {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+        }
+        if (isset($_POST['senha'])) {
+            $senha = $_POST['senha'];
+        }
+ 
+        if (trim($email == '')) {
             $_SESSION['alert'] = [
                 'icon' => 'error',
                 'title' => 'Erro ao logar!',
-                'text' => 'Login inválido ou inexistente, verifique e tente novamente!'
+                'text' => 'O campo email deve ser preenchido!'
             ];
-            header("Location: /projetoLogin01/");  
             return false;
-        } else {
-            // verifica se a senha fornecida bate com a senha vinculada ao email do banco
-            if ($userFound['email'] && password_verify($senha, $userFound['senha'])) {
-                session_start();
-                $_SESSION['email'] = $userFound['email'];
-                $_SESSION['nome'] = $userFound['nome'];
-                return true;
-            } else {
+        }
+        if (trim($senha == '')) {
+            $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'Erro ao logar!',
+                'text' => 'O campo senha deve ser preenchido!'
+            ];
+            return false;
+        }
+        
+        try {
+            $sql = $this->conn->prepare("SELECT u.email, 
+                                                u.nome, 
+                                                u.senha, 
+                                                u.fk_grupo, 
+                                                g.grupo AS nome_grupo 
+                                        FROM usuarios u
+                                        JOIN grupos g 
+                                        ON g.id = u.fk_grupo
+                                        WHERE email = '$email'");
+            $sql->execute();
+            $userFound = $sql->fetch(\PDO::FETCH_ASSOC);
+            
+            if ($userFound == '') {
                 $_SESSION['alert'] = [
                     'icon' => 'error',
                     'title' => 'Erro ao logar!',
-                    'text' => 'Login inválido ou inexistente, verifique e tente novamente!'
-                ];
-                header("Location: /projetoLogin01/");
+                    'text' => 'Login inexistente, verifique e tente novamente!'
+                ]; 
                 return false;
             }
+        } catch (PDOException $e){
+            $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'Erro ao logar!',
+                'text' => 'Erro ao consultar dados no banco. Erro -> ' . addslashes($e->getMessage())
+            ];
+            return false;
+        }
+
+        // verifica se a senha fornecida bate com a senha vinculada ao email do banco
+        if ($userFound['email'] && password_verify($senha, $userFound['senha'])) {
+
+            // pego o primeiro e segundo nome se ouver para exibir em qualquer lugar no projeto
+            $partNome = explode(' ', $userFound['nome']);
+            $nome = $partNome[0];
+            $sobrenome = isset($partNome[1]) ? $partNome[1] : '';
+            $nomeSobrenome = trim($nome . ' ' . $sobrenome);
+
+            $_SESSION['email'] = $userFound['email'];
+            $_SESSION['nomeSobrenome'] = $nomeSobrenome;
+            return true;
+        } else {
+            $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'Erro ao logar!',
+                'text' => 'Login inválido, verifique e tente novamente!'
+            ];
+            return false;
         }
     }
 }

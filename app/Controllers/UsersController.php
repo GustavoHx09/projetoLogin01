@@ -22,7 +22,7 @@ class UsersController {
         Auth::check();
         $users = $this->userModel->listarUsers();
         include __DIR__ . '/../Views/PagesUsuarios/listUsers.php';
-        return $users;
+        return true;
     }
 
     // lista os grupos pro select no cadastro de usuarios
@@ -34,6 +34,7 @@ class UsersController {
         return true;
     }
 
+    // editar usuarios
     public function formEdit($id)
     {
         Auth::check();
@@ -48,28 +49,37 @@ class UsersController {
     public function cadastrar() 
     {
         Auth::check();
-        $this->userModel->cadastrarUser();
-        header('Location: /projetoLogin01/users');
-        return true;
+        $result = $this->userModel->cadastrarUser();
+        if ($result === false) {
+            header('Location: /projetoLogin01/users/new');
+            return false;
+        } else {
+            header('Location: /projetoLogin01/users');
+            return true;
+        }
     }
 
     // editar usuarios
     public function editar($id) 
     {
         Auth::check();
-        // pego os dados do formulario de edicao
-        $dados = $_POST;
-        // e envio para o model para usar na edição dos dados
-        $this->userModel->editarUser($id, $dados);
-        header('Location: /projetoLogin01/users');
-        return true;
+        $oldName = $this->userModel->listUserid($id);
+        $result = $this->userModel->editarUser($id, $oldName);
+        if ($result === false) {
+            header('Location: /projetoLogin01/users/edit/'.$id.'');
+            return false;
+        } else {
+            header('Location: /projetoLogin01/users');
+            return true;
+        }
     }
 
     // deletar usuarios
     public function delete($id) 
     {
         Auth::check();
-        $this->userModel->deletarUser($id);
+        $oldName = $this->userModel->listUserid($id);
+        $this->userModel->deletarUser($id, $oldName);
         header("Location: /projetoLogin01/users");
         return true;
     }

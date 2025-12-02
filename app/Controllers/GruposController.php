@@ -45,8 +45,13 @@ class GruposController {
     {
         Auth::check();
         $result = $this->grupoModel->cadastrarGrupo();
-        header("Location: /projetoLogin01/grupos");
-        return true;
+        if ($result === false) {
+            header("Location: /projetoLogin01/grupos/new");
+            return false;
+        } else {
+            header("Location: /projetoLogin01/grupos");
+            return true;
+        }
     }
 
     // editar grupo
@@ -56,8 +61,13 @@ class GruposController {
         // apenas para pegar o nome do grupo antigo para exibir no alert
         $oldGrupo = $this->grupoModel->listGrupoid($id);
         $result = $this->grupoModel->editarGrupo($id, $oldGrupo);
-        header('Location: /projetoLogin01/grupos');
-        return true;
+        if ($result === false) {
+            header("Location: /projetoLogin01/grupos/edit/".$id."");
+            return false;
+        } else {
+            header("Location: /projetoLogin01/grupos");
+            return true;
+        }
     }
 
     // deletar grupo

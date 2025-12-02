@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema</title>
-    <link rel="stylesheet" href="/<?= $_ENV['BASE_URL']; ?>/assets/css/bootstrap.min.css">
-    <script src="/<?= $_ENV['BASE_URL']; ?>/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-
 <?php include(__DIR__ . '/../menu.php'); ?>
             <li class="nav-item">
                 <a class="nav-link" href="grupos/new">Cadastrar Grupos</a>
@@ -27,7 +15,6 @@
 <main class="container align-self-center">
     <h1>Registros de Grupos</h1>
 
-
     <?php
         echo "<table class='table table-hover table-striped table-bordered'>
             <tr>
@@ -38,37 +25,36 @@
                 <th>Deletar</th>
                 <th>Ações</th>
             </tr>";
-            if (empty($result)) {
+        if (empty($result)) {
+            echo "<tr>
+                    <td colspan='6'>Nenhum dado encontrado</td>
+                </tr>";
+        } else {
+            foreach ($result as $grupo) {
+                    $cadastrar = ($grupo['cadastrar']) ? "Sim" : "Não";
+                    $listar = ($grupo['listar']) ? "Sim" : "Não";
+                    $editar = ($grupo['editar']) ? "Sim" : "Não";
+                    $deletar = ($grupo['deletar']) ? "Sim" : "Não";
                 echo "<tr>
-                        <td colspan='6'>Nenhum dado encontrado</td>
-                    </tr>";
-            } else {
-                foreach ($result as $grupo) {
-                        $cadastrar = ($grupo['cadastrar']) ? "Sim" : "Não";
-                        $listar = ($grupo['listar']) ? "Sim" : "Não";
-                        $editar = ($grupo['editar']) ? "Sim" : "Não";
-                        $deletar = ($grupo['deletar']) ? "Sim" : "Não";
-                    echo "<tr>
-                            <td>" . $grupo['grupo'] . "</td>
-                            <td>" . $cadastrar . "</td>
-                            <td>" . $listar . "</td>
-                            <td>" . $editar . "</td>
-                            <td>" . $deletar . "</td>
-                            <td >
-                                <a href='/" . $_ENV['BASE_URL'] . "/grupos/edit/" . $grupo['id'] . "' class='btn btn-primary'>
-                                <i class='fas fa-edit'></i> Editar</a>
+                        <td>" . $grupo['grupo'] . "</td>
+                        <td>" . $cadastrar . "</td>
+                        <td>" . $listar . "</td>
+                        <td>" . $editar . "</td>
+                        <td>" . $deletar . "</td>
+                        <td >
+                            <a href='/" . $_ENV['BASE_URL'] . "/grupos/edit/" . $grupo['id'] . "' class='btn btn-primary'>
+                            <i class='fas fa-edit'></i> Editar</a>
 
-                                <form action='/" . $_ENV['BASE_URL'] . "/grupos/delete/" . $grupo['id'] . "' method='POST' style='display:inline;'>
-                                    <button type='submit' class='btn btn-danger' onclick=\"return confirm('Tem certeza que deseja excluir o grupo " . $grupo['grupo'] . "?');\">
-                                        <i class='fas fa-trash-alt'></i> Excluir
-                                    </button>
-                                </form>
-                            </td>
-                    <tr>";
-                }
+                            <form action='/" . $_ENV['BASE_URL'] . "/grupos/delete/" . $grupo['id'] . "' method='POST' style='display:inline;'>
+                                <button type='submit' class='btn btn-danger' onclick=\"return confirm('Tem certeza que deseja excluir o grupo " . $grupo['grupo'] . "?');\"><i class='fas fa-trash-alt'></i> Excluir</button>
+                            </form>
+                        </td>
+                <tr>";
             }
+        }
         echo "</table>";
     ?>
+</main>
 
     <?php
     if (isset($_SESSION['alert'])) {
@@ -87,4 +73,7 @@
         unset($_SESSION['alert']);
     }
     ?>
-</main>
+
+</body>
+
+</html>

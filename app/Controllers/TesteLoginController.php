@@ -17,34 +17,19 @@ class TesteLoginController {
     }
 
     public function login() {
-
-        $email = $_POST['email'] ?? '';
-        $senha = $_POST['senha'] ?? '';
-
-        if (empty($email) || empty($senha)) {
-            $_SESSION['alert'] = [
-                'icon' => 'error',
-                'title' => 'Erro ao logar!',
-                'text' => 'TODOS os campos DEVEM ser preenchidos, verifique e tente novamente!'
-            ];
-            header("Location: /projetoLogin01/");  
-            return false;      
-            exit;
-        } 
-
-        if($this->loginModel->LogarUsuario($email, $senha)) {
+        $result = $this->loginModel->LogarUsuario();
+        if($result === false) {
+            header("Location: /projetoLogin01/login");
+            return false;
+        } else {
             header("Location: /projetoLogin01/");
-            exit;
+            return true;
         }
-
-        return false;
-        exit;
     }
 
     public static function logout() {
-        session_unset();
         session_destroy();
         header("Location: /projetoLogin01/login");
-        exit;
+        return true;
     }
 }

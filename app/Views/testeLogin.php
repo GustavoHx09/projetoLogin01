@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema - Login</title>
+    <title>SystLog01</title>
 
     <!-- Bootstrap CSS -->
     <link href="/<?= $_ENV['BASE_URL']; ?>/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -12,7 +12,8 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    
+    <!-- Bootstrap JS -->
+    <script src="/<?= $_ENV['BASE_URL']; ?>/assets/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -63,8 +64,7 @@
     }
     ?>
 
-    <!-- Bootstrap JS -->
-    <script src="/<?= $_ENV['BASE_URL']; ?>/assets/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 
 </html>

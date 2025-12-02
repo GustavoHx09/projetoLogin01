@@ -81,8 +81,17 @@ class GruposModel extends ConnectDB
     // Cadastrar Grupo
     public function cadastrarGrupo()
     {
-        $nome = $_POST['grupo'];
-        if(trim($nome) == null) {
+        if (isset($_POST['grupo'])) {
+            $nome = $_POST['grupo'];
+        } else {
+            $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'Erro ao cadastrar grupo!',
+                'text' => 'Campo grupo não encontrado.'
+            ];
+            return false;
+        }
+        if(trim($nome) == '') {
             $_SESSION['alert'] = [
                 'icon' => 'error',
                 'title' => 'Erro ao cadastrar grupo!',
@@ -99,9 +108,7 @@ class GruposModel extends ConnectDB
             $sql->execute();
             $result = $sql->fetch(\PDO::FETCH_ASSOC);
 
-            if (!$result) {
-                $grupo = $nome;
-            } else {
+            if ($result) {
                 $_SESSION['alert'] = [
                 'icon' => 'error',
                 'title' => 'Erro ao cadastrar grupo!',
@@ -113,7 +120,7 @@ class GruposModel extends ConnectDB
             $_SESSION['alert'] = [
                 'icon' => 'error',
                 'title' => 'Erro ao cadastrar grupo!',
-                'text' => 'Erro ao verificar grupo. Erro -> '. addslashes($e->getMessage()) 
+                'text' => 'Erro de verificação. Erro -> '. addslashes($e->getMessage()) 
             ];
             return false;
         }
@@ -135,7 +142,7 @@ class GruposModel extends ConnectDB
                                                         :listar,
                                                         :editar,
                                                         :deletar)");
-            $sql->bindValue(':grupo', $grupo);
+            $sql->bindValue(':grupo', $nome);
             $sql->bindValue(':cadastrar', $dados['cadastrar']);
             $sql->bindValue(':listar', $dados['listar']);
             $sql->bindValue(':editar', $dados['editar']);
@@ -161,7 +168,50 @@ class GruposModel extends ConnectDB
     // Atualizar Grupo
     public function editarGrupo($id, $oldGrupo) 
     {
-        $dados['grupo'] = $_POST['grupo'];
+        if (isset($_POST['grupo'])) {
+            $nome = $_POST['grupo'];
+        } else {
+            $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'Erro ao cadastrar grupo!',
+                'text' => 'Campo grupo não encontrado.'
+            ];
+            return false;
+        }
+        if(trim($nome) == '') {
+            $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'Erro ao editar o grupo!',
+                'text' => 'O nome não pode ser nulo.'
+            ];
+            return false;
+        }
+
+        try {
+            $sql = $this->conexao->prepare("SELECT grupo 
+                                    FROM grupos
+                                    WHERE grupo = :grupo");
+            $sql->bindValue(':grupo', $nome);
+            $sql->execute();
+            $result = $sql->fetch(\PDO::FETCH_ASSOC);
+
+            if ($result['grupo'] != $oldGrupo['grupo']) { 
+                $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'Erro ao editar o grupo!',
+                'text' => 'Grupo com o nome: '. $nome .', ja existe no banco de dados.'
+                ];
+                return false;
+            }
+        } catch (PDOException $e) {
+            $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'Erro ao editar grupo!',
+                'text' => 'Erro de verificação. Erro -> '. addslashes($e->getMessage()) 
+            ];
+            return false;
+        }
+
         $dados['cadastrar'] = isset($_POST['cadastrar']) ? 1 : 0;
         $dados['listar'] = isset($_POST['listar']) ? 1 : 0;
         $dados['editar'] = isset($_POST['editar']) ? 1 : 0;
@@ -176,7 +226,7 @@ class GruposModel extends ConnectDB
                                                     deletar = :deletar
                                             WHERE id = $id
                                             ");
-            $sql->bindValue(':grupo', $dados['grupo']);
+            $sql->bindValue(':grupo', $nome);
             $sql->bindValue(':cadastrar', $dados['cadastrar']);
             $sql->bindValue(':listar', $dados['listar']);
             $sql->bindValue(':editar', $dados['editar']);
@@ -193,7 +243,7 @@ class GruposModel extends ConnectDB
             $_SESSION['alert'] = [
                 'icon' => 'error',
                 'title' => 'Erro ao atualizar grupo!',
-                'text' => 'Não foi possível atualizar os dados do grupo '. $oldGrupo['grupo'] .'. Erro -> ' . addslashes($e->getMessage())
+                'text' => 'Não foi possível atualizar os dados do grupo. Erro -> ' . addslashes($e->getMessage())
             ];
             return false;
         }

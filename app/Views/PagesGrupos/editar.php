@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema</title>
-    <link rel="stylesheet" href="/<?= $_ENV['BASE_URL']; ?>/assets/css/bootstrap.min.css">
-    <script src="/<?= $_ENV['BASE_URL']; ?>/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-
 <?php include(__DIR__ . '/../menu.php'); ?>
             <li class="nav-item">
                 <a class="nav-link" href="/<?= $_ENV['BASE_URL']; ?>/grupos/new">Cadastrar Grupos</a>
@@ -30,7 +18,7 @@
 
         <div class="mb-3">
             <label for="grupo" class="form-label fw-bold">Nome do Grupo</label>
-            <input type="text" name="grupo" value="<?= $result['grupo'] ?>" id="grupo" required class="form-control" placeholder="Digite o nome do grupo">
+            <input type="text" name="grupo" value="<?= $result['grupo'] ?>" id="grupo" class="form-control" placeholder="Digite o nome do grupo">
         </div>
 
         <div>
@@ -86,3 +74,7 @@ if (isset($_SESSION['alert'])) {
     unset($_SESSION['alert']);
 }
 ?>
+
+</body>
+
+</html>
