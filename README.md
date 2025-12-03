@@ -1,7 +1,7 @@
 # ProjetoLogin01 (Em desenvolvimento)
 
 ![Status: Em desenvolvimento](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Stack: PHP + MySQL + JS + HTML + CSS + BOOTSTRAP](https://img.shields.io/badge/stack-PHP%20%2B%20MySQL%20%2B%20JS-blue)
+![Stack: PHP + MySQL + JS + HTML + CSS + BOOTSTRAP](https://img.shields.io/badge/stack-PHP%20%2B%20MySQL%20%2B%20JS%20%2B%20HTML%20%2B%20CSS%20%2B%20BOOTSTRAP-blue)
 
 ## Sobre
 **ProjetoLogin01** é um projeto de portfólio que serve como base para evoluções futuras.  
